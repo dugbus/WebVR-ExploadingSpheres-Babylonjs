@@ -6,34 +6,65 @@ import { addLabelToScene, updateScore } from "./score";
 var canvas: any = document.getElementById("renderCanvas");
 var engine: Engine = new Engine(canvas, true);
 
+console.log('I am running')
 function createScene(): Scene {
     // Create scene
-    var scene: Scene = new Scene(engine);
-    var sphereLight = new DirectionalLight("dir02", new Vector3(0.2, -1, 0), scene);
+    const scene: Scene = new Scene(engine);
+    
+    const sphereLight = new DirectionalLight("dir02", new Vector3(0.2, -1, 0), scene);
     sphereLight.position = new Vector3(0, 80, 0);
-    var gravityVector = new BABYLON.Vector3(0, -1, 0);
+
+    const gravityVector = new BABYLON.Vector3(0, -1, 0);
     scene.enablePhysics(gravityVector, new CannonJSPlugin);
 
     scene.clearColor = BABYLON.Color4.FromColor3(BABYLON.Color3.Black());
 
-    var camera = new BABYLON.FreeCamera("Camera", new BABYLON.Vector3(0, 0, -10), scene);
-    //var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(0, 0, -10), scene);
-    camera.checkCollisions = true;
-    camera.applyGravity = true;
+    const camera = new BABYLON.FreeCamera("Camera", new BABYLON.Vector3(0, 2, 0), scene);
+    //const camera = new BABYLON.("UniversalCamera", new BABYLON.Vector3(0, 2,0), scene);
+    //camera.checkCollisions = true;
+    // camera.applyGravity = true;
+    7
     // Targets the camera to a particular position. In this case the scene origin
     camera.setTarget(BABYLON.Vector3.Zero());
 
     // Attach the camera to the canvas
     camera.attachControl(canvas, true);
 
-    var grassMaterial = new BABYLON.StandardMaterial("grass", scene);
-    var grassTexture = new GrassProceduralTexture("textgrass", 256, scene);
-    grassMaterial.ambientTexture = grassTexture;
-    grassMaterial.diffuseTexture= grassTexture;
 
+    // I made a grid material
+    var grassMaterial = new BABYLON.GridMaterial("grid", scene);
+    grassMaterial.majorUnitFrequency = 10;
+    grassMaterial.minorUnitVisibility = 0;
+    grassMaterial.gridRatio = 0.1;
+    grassMaterial.backFaceCulling = false;
+    grassMaterial.mainColor = new BABYLON.Color3(0, 0, 0);
+    grassMaterial.lineColor = new BABYLON.Color3(1, 1, 1);
+    
+    scene.onKeyboardObservable.add((kbInfo) => {
+        switch (kbInfo.type) {
+          case BABYLON.KeyboardEventTypes.KEYDOWN:
+            if (kbInfo.event.key === 'z') {
+                console.log('I got here')
+
+                const currentPosition = new BABYLON.Vector3(camera.position.x, camera.position.y, camera.position.z);
+                currentPosition.y ++
+                camera.position = currentPosition;
+                // update the camera position
+                camera.position = new BABYLON.Vector3(currentPosition.x, currentPosition.y, currentPosition.z);                
+            }
+            if (kbInfo.event.key === 'x') {
+                camera.position.z -= 1;
+            }
+            camera.update()
+            break;
+          case BABYLON.KeyboardEventTypes.KEYUP:
+            console.log("KEY UP: ", kbInfo.event.code);
+            break;
+        }
+      });
     // Create Ground
-    var ground = BABYLON.Mesh.CreatePlane("ground", 25.0, scene);
-    ground.position = new BABYLON.Vector3(0, -5, 0);
+    var ground = BABYLON.Mesh.CreatePlane("ground", 150.0, scene);
+    ground.position = new BABYLON.Vector3(0, -0.001, 0);
     ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
 
     ground.material = grassMaterial;
@@ -62,9 +93,9 @@ var startGameButton = function (panel) {
         addSpheres(scene);
     });
     var text1 = new GUI.TextBlock();
-    text1.text = "Start Game";
+    text1.text = "Eat a weasel";
     text1.color = "white";
-    text1.fontSize = 24;
+    text1.fontSize = 12;
     button.content = text1;
 }
 var scene: Scene = createScene();
