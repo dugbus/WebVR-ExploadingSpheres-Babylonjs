@@ -13,10 +13,9 @@ jobs:
         run: npm install
       - name: Build page
         run: npm run build
-      - name: what is in dist
-        run: ls dist
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.DEPLOY_KEY }}
-          deploy_key: ./dist
+          deploy_key: ${{ secrets.DEPLOY_KEY }}
+          publish_dir: ./dist
+          
