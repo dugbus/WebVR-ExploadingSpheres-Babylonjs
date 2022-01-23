@@ -24,6 +24,8 @@
     "babylonjs-loaders": "^3.3.0",
     "babylonjs-materials": "^3.3.0",
     "babylonjs-procedural-textures": "^3.3.0",
-    "cannon": "^0.6.2"
+    "cannon": "^0.6.2",
+    "earcut": "^2.2.3",
+    "oimo": "^1.0.9"
   }
 }
