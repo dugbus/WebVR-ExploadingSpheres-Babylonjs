@@ -1,41 +1,62 @@
-import { Scene, Vector3, MeshBuilder, Mesh, ShadowGenerator, DirectionalLight, ActionManager, ExecuteCodeAction } from "babylonjs";
-import {StandardMaterial, Texture, Color3} from "babylonjs-materials";
+import * as BABYLON from "babylonjs";
+import * as Material from "babylonjs-materials";
 import { addParticlesToMesh, removeParticlesFromMesh } from "./particles";
 import { incrementScore } from "./score";
 
-export function addSpheres(scene: Scene) {
-    for (let index = 0; index < 10; index++) {
-        addSphere(scene);
-    }
+export function addSpheres(scene: BABYLON.Scene) {
+  for (let index = 0; index < 10; index++) {
+    addSphere(scene);
+  }
 }
 
-var addSphere = function (scene: Scene) {
+const addSphere = function (scene: BABYLON.Scene) {
+  // Create sphere
+  const sphere: BABYLON.Mesh = BABYLON.MeshBuilder.CreateSphere(
+    "sphere",
+    { diameter: 1 },
+    scene as BABYLON.Scene
+  );
+  sphere.position = new BABYLON.Vector3(
+    Math.random() * 20 - 10,
+    10,
+    Math.random() * 10 - 5
+  );
+  sphere.material = new Material.SimpleMaterial("sphere material", scene);
+  sphere.physicsImpostor = new BABYLON.PhysicsImpostor(
+    sphere,
+    BABYLON.PhysicsImpostor.SphereImpostor,
+    { mass: 1 },
+    scene
+  );
 
-    // Create sphere
-    var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, scene);
-    sphere.position = new Vector3(Math.random() * 20 - 10, 10, Math.random() * 10 - 5);
-    sphere.material = new BABYLON.StandardMaterial("sphere material", scene)
-    sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1 }, scene);
-  
-    // Material
-    var materialAmiga = new StandardMaterial("amiga", scene);
-    materialAmiga.diffuseTexture = new Texture("textures/amiga.jpg", scene);
-    materialAmiga.emissiveColor = new Color3(0.5, 0.5, 0.5);
-    sphere.material = materialAmiga;
+  // Material
+  const materialAmiga = new Material.NormalMaterial("amiga", scene);
+  materialAmiga.diffuseTexture = new BABYLON.Texture(
+    "textures/amiga.jpg",
+    scene
+  );
+  sphere.material = materialAmiga;
 
-    sphere.actionManager = new ActionManager(scene);
-    //add click event to sphere
-    sphere.actionManager.registerAction(new ExecuteCodeAction(ActionManager.OnPickUpTrigger, function () {
-        var particleSystem = addParticlesToMesh(sphere, scene);
+  sphere.actionManager = new BABYLON.ActionManager(scene);
+  //add click event to sphere
+  sphere.actionManager.registerAction(
+    new BABYLON.ExecuteCodeAction(
+      BABYLON.ActionManager.OnPickUpTrigger,
+      function () {
+        var particleSystem = addParticlesToMesh(
+          sphere as BABYLON.AbstractMesh,
+          scene
+        );
         scene.removeMesh(sphere);
         sleep(250).then(() => {
-            removeParticlesFromMesh(particleSystem);
-            incrementScore();
-        })
+          removeParticlesFromMesh(particleSystem);
+          incrementScore();
+        });
+      }
+    )
+  );
 
-    }));
-
-    const sleep = (milliseconds) => {
-        return new Promise(resolve => setTimeout(resolve, milliseconds))
-    }
-}
+  const sleep = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
+};
