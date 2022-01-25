@@ -1,2 +1,2 @@
-Junk removed
-Go number #7
+
+https://dugbus.github.io/the-duel/
