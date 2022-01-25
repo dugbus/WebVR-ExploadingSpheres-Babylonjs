@@ -8,13 +8,12 @@
         "preserveConstEnums": true,
         "sourceMap": true,
         "experimentalDecorators": true,
-        "isolatedModules": false,
+        "isolatedModules": true,
         "lib": [
             "dom",
             "es2015.promise",
             "es5"
         ],
-        "declaration": true,
         "outDir": "./"
     },
     "files": [
