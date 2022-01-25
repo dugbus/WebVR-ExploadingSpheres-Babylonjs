@@ -6,7 +6,7 @@
   "homepage": "https://dugbus.github.io/the-duel/",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack && cp deploy.html dist/index.html",
+    "build": "webpack && cp public/* dist/",
     "start": "webpack-dev-server"
   },
   "author": "",
@@ -14,6 +14,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
+    "copy-webpack-plugin": "^10.2.1",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
