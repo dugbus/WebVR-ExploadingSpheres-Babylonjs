@@ -43,7 +43,7 @@ const addSphere = function (scene: BABYLON.Scene) {
     new BABYLON.ExecuteCodeAction(
       BABYLON.ActionManager.OnPickUpTrigger,
       function () {
-        var particleSystem = addParticlesToMesh(
+        const particleSystem = addParticlesToMesh(
           sphere as BABYLON.AbstractMesh,
           scene
         );
@@ -56,7 +56,5 @@ const addSphere = function (scene: BABYLON.Scene) {
     )
   );
 
-  const sleep = (milliseconds) => {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
-  };
+  const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 };

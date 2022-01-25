@@ -10,7 +10,9 @@ import { createGroundGrid } from "./createGroundGrid";
 import { handleKeyboard } from "./handleKeyboard";
 import { createPlayerMarker } from "./createPlayerMarker";
 
-export const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
+export const canvas = document.getElementById(
+  "renderCanvas"
+) as HTMLCanvasElement;
 export const engine: BABYLON.Engine = new BABYLON.Engine(canvas, true);
 
 export interface DuelScene extends BABYLON.Scene {
@@ -63,7 +65,7 @@ function createScene(): BABYLON.Scene {
   return scene;
 }
 
-var startGameButton = function (panel: GUI.StackPanel3D) {
+const startGameButton = function (panel: GUI.StackPanel3D) {
   const button = new GUI.Button3D();
   panel.addControl(button);
   button.onPointerUpObservable.add(function () {
@@ -83,4 +85,3 @@ engine.runRenderLoop(() => {
   scene.duel.players[0].position.y += 0.01;
   scene.render();
 });
-
