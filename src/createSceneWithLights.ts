@@ -24,9 +24,11 @@ export function createSceneWithLights() {
   ambientLight.specular = new BABYLON.Color3(1, 1, 1);
   ambientLight.groundColor = new BABYLON.Color3(0.5, 0.5, 0.5);
 
-  const gravityVector = new BABYLON.Vector3(0, -1, 0);
-  scene.enablePhysics(gravityVector);
+  const gravityVector = new BABYLON.Vector3(0, -9.81, 0);
+  const physicsPlugin = new BABYLON.CannonJSPlugin();
+  const isPhysicsEnabled = scene.enablePhysics(gravityVector, physicsPlugin);
 
+  console.log(`Physics is ${isPhysicsEnabled ? "enabled" : "disabled"}`);
   scene.clearColor = BABYLON.Color4.FromColor3(BABYLON.Color3.Black());
   return scene;
 }

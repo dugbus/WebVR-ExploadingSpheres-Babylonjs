@@ -13,7 +13,9 @@ import { createPlayerMarker } from "./createPlayerMarker";
 export const canvas = document.getElementById(
   "renderCanvas"
 ) as HTMLCanvasElement;
-export const engine: BABYLON.Engine = new BABYLON.Engine(canvas, true);
+export const engine: BABYLON.Engine = new BABYLON.Engine(canvas, true, {
+  deterministicLockstep: true,
+});
 
 export interface DuelScene extends BABYLON.Scene {
   duel?: {
@@ -29,10 +31,10 @@ function createScene(): BABYLON.Scene {
   setupCamera(scene);
 
   // const pipeline = new BABYLON.DefaultRenderingPipeline(
-  //     "defaultPipeline", // The name of the pipeline
-  //     true, // Do you want the pipeline to use HDR texture?
-  //     scene, // The scene instance
-  //     [scene.duel.camera] // The list of cameras to be attached to
+  //   "defaultPipeline", // The name of the pipeline
+  //   true, // Do you want the pipeline to use HDR texture?
+  //   scene, // The scene instance
+  //   [scene.duel.camera] // The list of cameras to be attached to
   // );
   // pipeline.bloomEnabled = true;
   // pipeline.bloomThreshold = 0.8;
@@ -82,6 +84,6 @@ const startGameButton = function (panel: GUI.StackPanel3D) {
 var scene: DuelScene = createScene();
 
 engine.runRenderLoop(() => {
-  scene.duel.players[0].position.y += 0.01;
+  //scene.duel.players[0].position.y += 0.01;
   scene.render();
 });
